@@ -5,15 +5,22 @@ namespace RabbitMQ.Consumer
 {
     static class Program
     {
+        private const string UriString = "amqp://guest:guest@localhost:5672";
+
         static void Main(string[] args)
         {
             var factory = new ConnectionFactory
             {
-                Uri = new Uri("amqp://guest:guest@localhost:5672")
+                Uri = new Uri(uriString: UriString)
             };
+            factory.ClientProvidedName = "app:audit component:event-consumer";
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
-            FanoutExchangeConsumer.Consume(channel);
+            QueueConsumer.Consume(channel);
+            //DirectExchangeConsumer.Consume(channel);
+            //TopicExchangeConsumer.Consume(channel);
+            //HeaderExchangeConsumer.Consume(channel);
+            //FanoutExchangeConsumer.Consume(channel);
         }
     }
 }

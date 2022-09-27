@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using System.Text;
 using System.Threading;
-
+using System;
 namespace RabbitMQ.Producer
 {
     public static class QueueProducer
@@ -20,7 +20,7 @@ namespace RabbitMQ.Producer
             {
                 var message = new { Name = "Producer", Message = $"Hello! Count: {count}" };
                 var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
-
+                Console.WriteLine($"Producer publishing {message}");
                 channel.BasicPublish("", "demo-queue", null, body);
                 count++;
                 Thread.Sleep(1000);
